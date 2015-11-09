@@ -24,6 +24,10 @@ func onePlus(f float64) float64 {
     return 1.0 + f
 }
 
+func oneMinus(f float64) float64 {
+    return 1.0 - f
+}
+
 func invert(f float64) float64 {
     return 1.0 / f
 }
@@ -163,35 +167,57 @@ func (m Matrix) Transpose() Matrix {
 
 // Max returns biggest value in matrix
 func (m Matrix) Max() (float64, error) {
+    index, err := m.MaxAt()
+    return m.values[index], err
+}
+
+// MaxAt returns index where biggest value in matrix is
+func (m Matrix) MaxAt() (int, error) {
     if m.Rows() == 0 || m.Cols() == 0 {
         return 0, errors.New("matrices: can't return max value in empty matrix")
     }
     maxval := m.values[0]
-    for _, val := range m.values {
+    maxvalIndex := 0
+    for i, val := range m.values {
         if val > maxval {
             maxval = val
+            maxvalIndex = i
         }
     }
-    return maxval, nil
+    return maxvalIndex, nil
 }
 
 // Min returns smallest value in matrix
 func (m Matrix) Min() (float64, error) {
+    index, err := m.MinAt()
+    return m.values[index], err
+}
+
+// MinAt returns index where smallest value in matrix is
+func (m Matrix) MinAt() (int, error) {
     if m.Rows() == 0 || m.Cols() == 0 {
         return 0, errors.New("matrices: can't return min value in empty matrix")
     }
     minval := m.values[0]
-    for _, val := range m.values {
+    minvalIndex := 0
+    for i, val := range m.values {
         if val < minval {
             minval = val
+            minvalIndex = i
         }
     }
-    return minval, nil
+    return minvalIndex, nil
 }
 
 // Sigmoid returns Matrix where Sigmoid function was applied to each element
 func (m Matrix) Sigmoid() Matrix {
     return m.Apply(negate).Apply(math.Exp).Apply(onePlus).Apply(invert)
+}
+
+// SigmoidPrime returns Matrix where SigmoidPrime function was applied to each element
+func (m Matrix) SigmoidPrime() Matrix {
+    result, _ := m.Sigmoid().Dot(m.Sigmoid().Apply(oneMinus))
+    return result
 }
 
 // String converts matrix to string
