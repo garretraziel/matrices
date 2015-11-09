@@ -2,10 +2,31 @@ package matrices
 
 import (
     "fmt"
+    "math"
     "math/rand"
     "errors"
     "strings"
 )
+
+func numberlen(f float64) (res int) {
+    for f >= 10 {
+        f /= 10
+        res++
+    }
+    return
+}
+
+func negate(f float64) float64 {
+    return -f
+}
+
+func onePlus(f float64) float64 {
+    return 1.0 + f
+}
+
+func invert(f float64) float64 {
+    return 1.0 / f
+}
 
 // Matrix represents two-dimensional field
 type Matrix struct {
@@ -15,7 +36,7 @@ type Matrix struct {
 
 // Rows returns number of rows in matrix
 func (m Matrix) Rows() int {
-    return len(m.values)/m.cols
+    return len(m.values) / m.cols
 }
 
 // Cols returns number of columns in matrix
@@ -109,8 +130,8 @@ func (m Matrix) Apply(operation func(float64) float64) Matrix {
     return result
 }
 
-// MatrixMult multiplies two matrices
-func (m Matrix) MatrixMult(n Matrix) (Matrix, error) {
+// Dot multiplies two matrices
+func (m Matrix) Dot(n Matrix) (Matrix, error) {
     var result Matrix
     if m.Cols() != n.Rows() {
         return result, errors.New("matrices: for matrix multiplication, first matrix cols == second matrix rows")
@@ -166,6 +187,11 @@ func (m Matrix) Min() (float64, error) {
         }
     }
     return minval, nil
+}
+
+// Sigmoid returns Matrix where Sigmoid function was applied to each element
+func (m Matrix) Sigmoid() Matrix {
+    return m.Apply(negate).Apply(math.Exp).Apply(onePlus).Apply(invert)
 }
 
 // String converts matrix to string
