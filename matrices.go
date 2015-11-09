@@ -220,7 +220,6 @@ func (m Matrix) SigmoidPrime() Matrix {
     return result
 }
 
-// String converts matrix to string
 func (m Matrix) String() (result string) {
     maxval, _ := m.Max()
     flen := numberlen(maxval)
