@@ -8,30 +8,6 @@ import (
     "strings"
 )
 
-func numberlen(f float64) (res int) {
-    for f >= 10 {
-        f /= 10
-        res++
-    }
-    return
-}
-
-func negate(f float64) float64 {
-    return -f
-}
-
-func onePlus(f float64) float64 {
-    return 1.0 + f
-}
-
-func oneMinus(f float64) float64 {
-    return 1.0 - f
-}
-
-func invert(f float64) float64 {
-    return 1.0 / f
-}
-
 // Matrix represents two-dimensional field
 type Matrix struct {
     cols int
@@ -211,12 +187,12 @@ func (m Matrix) MinAt() (int, error) {
 
 // Sigmoid returns Matrix where Sigmoid function was applied to each element
 func (m Matrix) Sigmoid() Matrix {
-    return m.Apply(negate).Apply(math.Exp).Apply(onePlus).Apply(invert)
+    return m.Apply(Negate).Apply(math.Exp).Apply(OnePlus).Apply(Invert)
 }
 
 // SigmoidPrime returns Matrix where SigmoidPrime function was applied to each element
 func (m Matrix) SigmoidPrime() Matrix {
-    result, _ := m.Sigmoid().Dot(m.Sigmoid().Apply(oneMinus))
+    result, _ := m.Sigmoid().Dot(m.Sigmoid().Apply(OneMinus))
     return result
 }
 
