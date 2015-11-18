@@ -192,12 +192,18 @@ func (m Matrix) Sigmoid() Matrix {
 
 // SigmoidPrime returns Matrix where SigmoidPrime function was applied to each element
 func (m Matrix) SigmoidPrime() Matrix {
-    result, _ := m.Sigmoid().Dot(m.Sigmoid().Apply(OneMinus))
+    result, err := m.Sigmoid().Dot(m.Sigmoid().Apply(OneMinus))
+    if err != nil {
+        panic(err)
+    }
     return result
 }
 
 func (m Matrix) String() (result string) {
-    maxval, _ := m.Max()
+    maxval, err := m.Max()
+    if err != nil {
+        panic(err)
+    }
     flen := numberlen(maxval)
     floatfmt := fmt.Sprintf("%%%d.2f", flen + 6)
     rows := make([]string, m.Rows())
