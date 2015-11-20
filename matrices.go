@@ -50,6 +50,13 @@ func InitMatrixWithValues(rows, cols int, values []float64) (Matrix, error) {
     return m, nil
 }
 
+// OneHotMatrix creates matrix that has one on given position and zeros everywhere else
+func OneHotMatrix(rows, cols, setrow, setcol int) (Matrix, error) {
+    m := InitMatrix(rows, cols)
+    err := m.Set(setrow, setcol, 1.0)
+    return m, err
+}
+
 func (m Matrix) checkRowCol(row, col int) bool {
     return row < m.Rows() && col < m.Cols() && row >= 0 && col >= 0
 }
