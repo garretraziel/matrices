@@ -108,6 +108,11 @@ func (m Matrix) Sub(n Matrix) (Matrix, error) {
     return m.operate(n, func (x, y float64) float64 { return x - y; })
 }
 
+// Mult multiplies elements in matrices piecewise
+func (m Matrix) Mult(n Matrix) (Matrix, error) {
+    return m.operate(n, func (x, y float64) float64 { return x * y; })
+}
+
 // Apply applies function to each element of Matrix
 func (m Matrix) Apply(operation func(float64) float64) Matrix {
     result := InitMatrix(m.Rows(), m.Cols())
@@ -199,7 +204,7 @@ func (m Matrix) Sigmoid() Matrix {
 
 // SigmoidPrime returns Matrix where SigmoidPrime function was applied to each element
 func (m Matrix) SigmoidPrime() Matrix {
-    result, err := m.Sigmoid().Dot(m.Sigmoid().Apply(OneMinus))
+    result, err := m.Sigmoid().Mult(m.Sigmoid().Apply(OneMinus))
     if err != nil {
         panic(err)
     }
