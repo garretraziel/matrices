@@ -35,7 +35,7 @@ func InitMatrix(rows, cols int) Matrix {
 func RandInitMatrix(rows, cols int) Matrix {
     m := InitMatrix(rows, cols)
     for i := range m.values {
-        m.values[i] = rand.Float64()
+        m.values[i] = rand.NormFloat64()
     }
     return m
 }
