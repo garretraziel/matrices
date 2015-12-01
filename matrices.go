@@ -122,6 +122,15 @@ func (m Matrix) Apply(operation func(float64) float64) Matrix {
     return result
 }
 
+// Sum sumarizes whole matrix
+func (m Matrix) Sum() float64 {
+    sum := 0.0
+    for _, val := range m.values {
+        sum += val
+    }
+    return sum
+}
+
 // Dot multiplies two matrices
 func (m Matrix) Dot(n Matrix) (Matrix, error) {
     var result Matrix
