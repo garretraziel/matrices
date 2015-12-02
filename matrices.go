@@ -40,6 +40,15 @@ func RandInitMatrix(rows, cols int) Matrix {
     return m
 }
 
+// RandInitMatrixNormalized initializes Matrix structure and fills it with random numbers with respect to rows count
+func RandInitMatrixNormalized(rows, cols int) Matrix {
+    m := InitMatrix(rows, cols)
+    for i := range m.values {
+        m.values[i] = rand.NormFloat64() / math.Sqrt(float64(rows))
+    }
+    return m
+}
+
 // InitMatrixWithValues initializes Matrix with given dimensions and values
 func InitMatrixWithValues(rows, cols int, values []float64) (Matrix, error) {
     var m Matrix
