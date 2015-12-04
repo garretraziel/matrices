@@ -6,6 +6,7 @@ import (
     "math/rand"
     "errors"
     "strings"
+    "encoding/json"
 )
 
 // Matrix represents two-dimensional field
@@ -50,13 +51,8 @@ func RandInitMatrixNormalized(rows, cols int) Matrix {
 }
 
 // InitMatrixWithValues initializes Matrix with given dimensions and values
-func InitMatrixWithValues(rows, cols int, values []float64) (Matrix, error) {
-    var m Matrix
-    if len(values) != rows*cols {
-        return m, errors.New("matrices: bad dimensions of matrix")
-    }
-    m = Matrix{cols: cols, values: values}
-    return m, nil
+func InitMatrixWithValues(cols int, values []float64) Matrix {
+    return Matrix{cols: cols, values: values}
 }
 
 // OneHotMatrix creates matrix that has one on given position and zeros everywhere else
@@ -248,4 +244,16 @@ func (m Matrix) String() (result string) {
     }
     result = strings.Join(rows, "\n")
     return
+}
+
+// MarshalJSON implements Marshaler interface
+func (m Matrix) MarshalJSON() ([]byte, error) {
+    res := struct {
+        Cols int
+        Values []float64
+    }{
+        m.cols,
+        m.values,
+    }
+    return json.Marshal(res)
 }
