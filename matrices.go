@@ -257,3 +257,17 @@ func (m Matrix) MarshalJSON() ([]byte, error) {
     }
     return json.Marshal(res)
 }
+
+// UnmarshalJSON implements Unmarshaler interface
+func (m *Matrix) UnmarshalJSON(serialized []byte) error {
+    var exportedMatrix struct {
+        Cols int
+        Values []float64
+    }
+    if err := json.Unmarshal(serialized, &exportedMatrix); err != nil {
+        return err
+    }
+    m.cols = exportedMatrix.Cols
+    m.values = exportedMatrix.Values
+    return nil
+}
