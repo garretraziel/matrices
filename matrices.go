@@ -62,6 +62,13 @@ func OneHotMatrix(rows, cols, setrow, setcol int) (Matrix, error) {
     return m, err
 }
 
+// Copy creates copy of given matrix
+func (m Matrix) Copy() Matrix {
+    vals := make([]float64, len(m.values))
+    copy(vals, m.values)
+    return InitMatrixWithValues(m.cols, vals)
+}
+
 func (m Matrix) checkRowCol(row, col int) bool {
     return row < m.Rows() && col < m.Cols() && row >= 0 && col >= 0
 }
